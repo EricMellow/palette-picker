@@ -8,6 +8,18 @@ html {
   box-sizing: inherit;
 }
 
+h1 {
+  text-align: center;
+  font-size: 3rem;
+  margin: 10px;
+}
+
+select {
+  width: 20%;
+  margin: 10px;
+  height: 50px;
+}
+
 .color-swatch {
   height: 275px;
   flex-grow: 1;
@@ -24,4 +36,37 @@ html {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.generator-btn {
+  margin: 10px;
+  height: 50px;
+  font-size: 1.5rem;
+  padding: 10px;
+  border-radius: 5px;
+  color: #6f6f6f;
+}
+
+.save-form {
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.palette-input {
+  height: 50px;
+  width: 30%;
+  margin: 10px;
+  border-radius: 5px;
+  padding-left: 5px;
+  font-size: 1.5rem;
+}
+
+.save-palette-btn {
+  margin: 10px;
+  height: 50px;
+  border-radius: 5px;
+  font-size: 1.5rem;
+  width: 20%;
 }
