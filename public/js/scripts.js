@@ -2,7 +2,7 @@ setRandomColors()
 
 var $generateBtn = $('.generator-btn')
 
-$generateBtn.on('click', randomColorGenerator);
+$generateBtn.on('click', setRandomColors);
 
 function randomColorGenerator() {
   const value1 = Math.floor(Math.random() * 255)

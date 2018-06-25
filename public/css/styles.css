@@ -1,0 +1,24 @@
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.color-swatch {
+  height: 275px;
+  flex-grow: 1;
+  margin: 5px;
+}
+
+.swatch-container {
+  display: flex;
+  justify-content: space-around;
+  width: 80vw;
+}
+
+.palette-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
