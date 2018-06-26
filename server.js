@@ -7,7 +7,8 @@ app.use(bodyParser.json());
 
 app.set('port', process.env.PORT || 3000);
 app.locals.title = 'Palette Picker';
-app.locals.projects = [{id: 1, name: 'Project Name', palettes: {}}]
+app.locals.projects = [{id: 3, name: 'Project Name'}]
+app.locals.palettes = [{id: 1, name: 'Palette Name', colors: {}, project_id: 1}]
 
 app.get('/', (request, response) => {
   response.send('Go ahead and pick those palettes!');
@@ -34,4 +35,18 @@ app.post('/api/v1/projects', (request, response) => {
 
 app.get('/api/v1/projects', (request, response) => {
   response.status(200).json(app.locals.projects)
+})
+
+app.post('/api/v1/palettes', (request, response) => {
+  const id = Date.now().toString();
+  const { name, colors, projectName } = request.body;
+  const project = app.locals.projects.find(project => project.name === projectName)
+  const project_id = project.id;
+
+  app.locals.palettes.push({id, name, colors, project_id})
+  response.status(201).json({ id, name, colors, project_id })
+})
+
+app.get('/api/v1/palettes', (request, response) => {
+  response.status(200).json(app.locals.palettes)
 })
