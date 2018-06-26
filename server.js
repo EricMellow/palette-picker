@@ -30,3 +30,6 @@ app.post('/api/v1/projects', (response, request) => {
   }
 })
 
+app.get('/api/v1/projects', (response, request) => {
+  response.status(200).json(app.locals.projects)
+})
