@@ -28,7 +28,14 @@ select {
 .color-swatch {
   height: 275px;
   flex-grow: 1;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
   margin: 5px;
+  align-items: flex-end;
+  font-size: 2rem;
+  color: rgb(255, 255, 255, .7);
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
 }
 
 .swatch-container {
