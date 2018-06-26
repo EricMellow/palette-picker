@@ -29,3 +29,4 @@ app.post('/api/v1/projects', (response, request) => {
     response.status(201).json({id, name, palettes: {}})
   }
 })
+
