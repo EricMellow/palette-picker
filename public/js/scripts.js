@@ -19,7 +19,9 @@ function setRandomColors() {
   const colorDivs = ['.color1', '.color2', '.color3', '.color4', '.color5']
 
   colorDivs.forEach(div => {
-    $(div).css("background-color", randomColorGenerator)
+    if (!$(div).hasClass("locked")) {
+      $(div).css("background-color", randomColorGenerator)
+    }
   })
 }
 
