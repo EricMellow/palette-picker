@@ -38,16 +38,16 @@ function toggleLock() {
 
 function createProject(event) {
   event.preventDefault()
-  const url = 'localhost:3000/api/v1/projects'
+  const url = 'http://localhost:3000/api/v1/projects'
   const projectName = $('.project-input').val()
   const data = {name: projectName}
 
   fetch(url, {
+    method: 'POST',
     body: JSON.stringify(data),
     headers: {
       'content-type': 'application/json'
-    },
-    method: 'POST',
+    }
   })
   // check and see if a folder with that name already exists
 

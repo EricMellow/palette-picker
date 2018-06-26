@@ -1,7 +1,9 @@
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
 
 app.use(express.static('public'));
+app.use(bodyParser.json());
 
 app.set('port', process.env.PORT || 3000);
 app.locals.title = 'Palette Picker';
@@ -15,7 +17,7 @@ app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
 });
 
-app.post('/api/v1/projects', (response, request) => {
+app.post('/api/v1/projects', (request, response) => {
   const id = Date.now().toString();
   const { name } = request.body;
   const nameAlreadyExists = app.locals.projects.find(project => project.name === name)
@@ -30,6 +32,6 @@ app.post('/api/v1/projects', (response, request) => {
   }
 })
 
-app.get('/api/v1/projects', (response, request) => {
+app.get('/api/v1/projects', (request, response) => {
   response.status(200).json(app.locals.projects)
 })
