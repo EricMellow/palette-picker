@@ -1,8 +1,11 @@
 setRandomColors()
 
 var $generateBtn = $('.generator-btn')
+var $colorSwatch = $('.color-swatch')
 
 $generateBtn.on('click', setRandomColors);
+$colorSwatch.on('click', toggleLock)
+
 
 function randomColorGenerator() {
   const value1 = Math.floor(Math.random() * 255)
@@ -13,9 +16,18 @@ function randomColorGenerator() {
 }
 
 function setRandomColors() {
-  $('.color1').css("background-color", randomColorGenerator)
-  $('.color2').css("background-color", randomColorGenerator)
-  $('.color3').css("background-color", randomColorGenerator)
-  $('.color4').css("background-color", randomColorGenerator)
-  $('.color5').css("background-color", randomColorGenerator)
+  const colorDivs = ['.color1', '.color2', '.color3', '.color4', '.color5']
+
+  colorDivs.forEach(div => {
+    $(div).css("background-color", randomColorGenerator)
+  })
+}
+
+function toggleLock() {
+  $(this).toggleClass("locked")
+  if ($(this).hasClass("locked")) {
+    $(this).text("Locked")
+  } else {
+    $(this).text("Lock")
+  }
 }

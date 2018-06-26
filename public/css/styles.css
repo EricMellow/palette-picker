@@ -28,7 +28,11 @@ select {
 .color-swatch {
   height: 275px;
   flex-grow: 1;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
   margin: 5px;
+  align-items: flex-end;
 }
 
 .swatch-container {
