@@ -49,9 +49,22 @@ function createProject(event) {
       'content-type': 'application/json'
     }
   })
-  // check and see if a folder with that name already exists
 
-  // if no folder exists go to /projects and create one
-
+  addProjectsAsOptions()
   $('.project-input').val('')
+}
+
+async function addProjectsAsOptions() {
+  const url = 'http://localhost:3000/api/v1/projects'
+  const response = await fetch(url)
+  const projects = await response.json()
+  const options = projects.map(project => {
+    return (`<option value=${project.name}>${project.name}</option>`)
+  })
+
+  $('.select-projects').replaceWith(`<select 
+  name="projects" 
+  class="select-projects">
+  ${options}
+  </select >`)
 }
