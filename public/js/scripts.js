@@ -3,10 +3,12 @@ setRandomColors()
 var $generateBtn = $('.generator-btn')
 var $colorSwatch = $('.color-swatch')
 var $projectForm = $('.create-form')
+var $paletteForm = $('.save-form')
 
 $generateBtn.on('click', setRandomColors);
 $colorSwatch.on('click', toggleLock)
 $projectForm.on('submit', createProject)
+$paletteForm.on('submit', createPalette)
 
 
 function randomColorGenerator() {
@@ -49,9 +51,49 @@ function createProject(event) {
       'content-type': 'application/json'
     }
   })
-  // check and see if a folder with that name already exists
 
-  // if no folder exists go to /projects and create one
-
+  addProjectsAsOptions()
   $('.project-input').val('')
 }
+
+function createPalette(event) {
+  event.preventDefault()
+  const url = 'http://localhost:3000/api/v1/palettes'
+  const paletteName = $('.palette-input').val()
+  const data = {
+    name: paletteName,
+    colors: {
+      color1: $('.color1').css("background-color"),
+      color2: $('.color2').css("background-color"),
+      color3: $('.color3').css("background-color"),
+      color4: $('.color4').css("background-color"),
+      color5: $('.color5').css("background-color"),
+    },
+    projectName: $('.select-projects').val()
+  }
+  console.log($('.select-projects').val())
+  fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      'content-type': 'application/json'
+    }
+  })
+  $('.palette-input').val('')
+}
+
+async function addProjectsAsOptions() {
+  const url = 'http://localhost:3000/api/v1/projects'
+  const response = await fetch(url)
+  const projects = await response.json()
+  const options = projects.map(project => {
+    return (`<option value=${project.name}>${project.name}</option>`)
+  })
+
+  $('.select-projects').replaceWith(`<select 
+  name="projects" 
+  class="select-projects">
+  ${options}
+  </select >`)
+}
+
