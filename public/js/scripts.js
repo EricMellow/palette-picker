@@ -2,9 +2,11 @@ setRandomColors()
 
 var $generateBtn = $('.generator-btn')
 var $colorSwatch = $('.color-swatch')
+var $projectForm = $('.create-form')
 
 $generateBtn.on('click', setRandomColors);
 $colorSwatch.on('click', toggleLock)
+$projectForm.on('submit', createProject)
 
 
 function randomColorGenerator() {
@@ -32,4 +34,13 @@ function toggleLock() {
   } else {
     $(this).text("Lock")
   }
+}
+
+function createProject(event) {
+  event.preventDefault()
+  // check and see if a folder with that name already exists
+
+  // if no folder exists go to /projects and create one
+
+  $('.project-input').val('')
 }
