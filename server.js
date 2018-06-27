@@ -53,16 +53,42 @@ app.get('/api/v1/projects', (request, response) => {
     })
 })
 
-app.post('/api/v1/palettes', (request, response) => {
-  const id = Date.now().toString();
-  const { name, colors, projectName } = request.body;
-  const project = app.locals.projects.find(project => project.name === projectName)
-  const project_id = project.id;
+app.post('/api/v1/palettes', async (request, response) => {
+  const { 
+    name, 
+    color1, 
+    color2, 
+    color3, 
+    color4, 
+    color5,  
+    projectName } = request.body;
+  const projects = await database('projects').select()
+  const matchingProject = projects.find(project => project.name === projectName)
+  const project_id = matchingProject.id;
 
-  app.locals.palettes.push({id, name, colors, project_id})
-  response.status(201).json({ id, name, colors, project_id })
+  database('palettes').insert({
+    name,
+    color1,
+    color2,
+    color3,
+    color4,
+    color5,
+    project_id
+  }, 'id')
+    .then(paletteId => {
+      response.status(201).json({paletteId: paletteId[0]})
+    })
+    .catch(error => {
+      response.status(500).json({error})
+    })
 })
 
 app.get('/api/v1/palettes', (request, response) => {
-  response.status(200).json(app.locals.palettes)
+  database('palettes').select()
+    .then(palettes => {
+      response.status(200).json(palettes)
+    })
+    .catch(error => {
+      response.status(500).json({ error })
+    })
 })
