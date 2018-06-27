@@ -71,7 +71,7 @@ function createPalette(event) {
     },
     projectName: $('.select-projects').val()
   }
-  console.log($('.select-projects').val())
+  
   fetch(url, {
     method: 'POST',
     body: JSON.stringify(data),
