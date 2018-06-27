@@ -1,4 +1,5 @@
 setRandomColors()
+addProjectsAsOptions()
 
 var $generateBtn = $('.generator-btn')
 var $colorSwatch = $('.color-swatch')
@@ -38,47 +39,46 @@ function toggleLock() {
   }
 }
 
-function createProject(event) {
+async function createProject(event) {
   event.preventDefault()
   const url = 'http://localhost:3000/api/v1/projects'
   const projectName = $('.project-input').val()
   const data = {name: projectName}
 
-  fetch(url, {
+  await fetch(url, {
     method: 'POST',
-    body: JSON.stringify(data),
     headers: {
-      'content-type': 'application/json'
-    }
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
   })
 
   addProjectsAsOptions()
   $('.project-input').val('')
 }
 
-function createPalette(event) {
+async function createPalette(event) {
   event.preventDefault()
   const url = 'http://localhost:3000/api/v1/palettes'
   const paletteName = $('.palette-input').val()
   const data = {
     name: paletteName,
-    colors: {
-      color1: $('.color1').css("background-color"),
-      color2: $('.color2').css("background-color"),
-      color3: $('.color3').css("background-color"),
-      color4: $('.color4').css("background-color"),
-      color5: $('.color5').css("background-color"),
-    },
+    color1: $('.color1').css("background-color"),
+    color2: $('.color2').css("background-color"),
+    color3: $('.color3').css("background-color"),
+    color4: $('.color4').css("background-color"),
+    color5: $('.color5').css("background-color"),
     projectName: $('.select-projects').val()
   }
-  console.log($('.select-projects').val())
-  fetch(url, {
+
+  await fetch(url, {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {
       'content-type': 'application/json'
     }
   })
+  
   $('.palette-input').val('')
 }
 
