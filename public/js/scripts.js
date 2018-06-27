@@ -1,4 +1,5 @@
 setRandomColors()
+addProjectsAsOptions()
 
 var $generateBtn = $('.generator-btn')
 var $colorSwatch = $('.color-swatch')
@@ -46,10 +47,10 @@ function createProject(event) {
 
   fetch(url, {
     method: 'POST',
-    body: JSON.stringify(data),
     headers: {
-      'content-type': 'application/json'
-    }
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
   })
 
   addProjectsAsOptions()
@@ -71,7 +72,7 @@ function createPalette(event) {
     },
     projectName: $('.select-projects').val()
   }
-  
+
   fetch(url, {
     method: 'POST',
     body: JSON.stringify(data),

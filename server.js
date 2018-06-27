@@ -21,18 +21,25 @@ app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
 });
 
-app.post('/api/v1/projects', (request, response) => {
-  const id = Date.now().toString();
-  const { name } = request.body;
-  const nameAlreadyExists = app.locals.projects.find(project => project.name === name)
+app.post('/api/v1/projects', async (request, response) => {
+  let { name } = request.body;
+  const projects = await database('projects').select()
+  const nameAlreadyExists = projects.find(project => {
+    return project.name.toUpperCase() === name.toUpperCase()
+  })
 
   if (nameAlreadyExists) {
-    response.status(304).send({
+    return response.status(304).send({
       error: 'Project name already exists.'
     })
   } else {
-    app.locals.projects.push({id, name, palettes: {}})
-    response.status(201).json({id, name, palettes: {}})
+    return database('projects').insert({name}, 'id')
+    .then(projectId => {
+      response.status(201).json(({projectId: projectId[0]}))
+    })
+    .catch(error => {
+      response.status(500).json({error})
+    })
   }
 })
 
