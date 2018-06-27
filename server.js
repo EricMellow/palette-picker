@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const environment = process.env.NODE_ENV || 'development';
+const configuration = require('./knexfile')[environment];
+const database = require('knex')(configuration);
 
 app.use(express.static('public'));
 app.use(bodyParser.json());
@@ -11,7 +14,7 @@ app.locals.projects = [{id: 3, name: 'Project Name'}]
 app.locals.palettes = [{id: 1, name: 'Palette Name', colors: {}, project_id: 1}]
 
 app.get('/', (request, response) => {
-  response.send('Go ahead and pick those palettes!');
+  // response.send('Go ahead and pick those palettes!');
 });
 
 app.listen(app.get('port'), () => {
@@ -34,7 +37,13 @@ app.post('/api/v1/projects', (request, response) => {
 })
 
 app.get('/api/v1/projects', (request, response) => {
-  response.status(200).json(app.locals.projects)
+  database('projects').select()
+    .then(projects => {
+      response.status(200).json(projects)
+    })
+    .catch(error => {
+      response.status(500).json({error})
+    })
 })
 
 app.post('/api/v1/palettes', (request, response) => {
