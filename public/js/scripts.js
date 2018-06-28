@@ -95,7 +95,7 @@ async function addPalettesToPage() {
     const palettes = await response.json()
     const palettesDisplay = palettes.map(palette => {
       return (`
-      <div class="palette-display">
+      <div class="circle-display">
       <div class="color-circle" style="background-color:${palette.color1};"></div>
       <div class="color-circle" style="background-color:${palette.color2};"></div>
       <div class="color-circle" style="background-color:${palette.color3};"></div>
@@ -106,7 +106,7 @@ async function addPalettesToPage() {
     })
 
     $('.projects-container').append(`
-    <article class="project-display">
+    <article class="card-display">
     <h4>${project.name}</h4>
     ${palettesDisplay}
     </article>

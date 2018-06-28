@@ -34,6 +34,27 @@ header {
   display: flex;
   justify-content: center;
 }
+
+.color-circle {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  margin: 5px;
+}
+
+.circle-display {
+  display: flex;
+}
+
+.projects-container {
+  display: flex;
+  text-align: center;
+}
+
+.card-display {
+  margin: 10px
+}
+
 .color-swatch {
   height: 275px;
   flex-grow: 1;
