@@ -1,6 +1,6 @@
 setRandomColors()
 addProjectsAsOptions()
-addPalettesToPage()
+addAllPalettesToPage()
 
 var $generateBtn = $('.generator-btn')
 var $colorSwatch = $('.color-swatch')
@@ -55,13 +55,25 @@ async function createProject(event) {
   })
 
   addProjectsAsOptions()
+  addProjectDisplay(projectName)
   $('.project-input').val('')
+}
+
+function addProjectDisplay(projectName) {
+  $('.projects-container').append(`
+    <article class="card-display">
+    <h4>${projectName}</h4>
+    <div class="${projectName}">
+    </div>
+    </article>
+    `)
 }
 
 async function createPalette(event) {
   event.preventDefault()
   const url = 'http://localhost:3000/api/v1/palettes'
   const paletteName = $('.palette-input').val()
+  const projectName = $('.select-projects').val()
   const data = {
     name: paletteName,
     color1: $('.color1').css("background-color"),
@@ -69,7 +81,7 @@ async function createPalette(event) {
     color3: $('.color3').css("background-color"),
     color4: $('.color4').css("background-color"),
     color5: $('.color5').css("background-color"),
-    projectName: $('.select-projects').val()
+    projectName: projectName
   }
 
   await fetch(url, {
@@ -80,11 +92,39 @@ async function createPalette(event) {
     }
   })
   
-  addPalettesToPage()
+  addPaletteToPage(projectName)
   $('.palette-input').val('')
 }
 
-async function addPalettesToPage() {
+async function addPaletteToPage(projectName) {
+  const url = 'http://localhost:3000/api/v1/projects'
+  const response = await fetch(url)
+  const projects = await response.json()
+  const matchingProject = projects.find(project => project.name === projectName)
+  const paletteUrl = `/api/v1/projects/${matchingProject.id}/palettes`
+  const paletteResponse = await fetch(paletteUrl)
+  const palettes = await paletteResponse.json()
+  const palettesDisplay = palettes.map(palette => {
+    return (`
+    <div class="circle-display">
+    <div class="color-circle" style="background-color:${palette.color1};"></div>
+    <div class="color-circle" style="background-color:${palette.color2};"></div>
+    <div class="color-circle" style="background-color:${palette.color3};"></div>
+    <div class="color-circle" style="background-color:${palette.color4};"></div>
+    <div class="color-circle" style="background-color:${palette.color5};"></div>
+    </div>
+    `)
+  })
+  
+  $(`.${projectName}`).replaceWith(`
+  <div class="${projectName}">
+  ${palettesDisplay}
+  </div>
+  `)
+  $('.select-projects').val("")
+}
+
+async function addAllPalettesToPage() {
   const url = 'http://localhost:3000/api/v1/projects'
   const response = await fetch(url)
   const projects = await response.json()
@@ -108,7 +148,9 @@ async function addPalettesToPage() {
     $('.projects-container').append(`
     <article class="card-display">
     <h4>${project.name}</h4>
+    <div class="${project.name}">
     ${palettesDisplay}
+    </div>
     </article>
     `)
   })
