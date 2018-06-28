@@ -92,3 +92,5 @@ app.get('/api/v1/palettes', (request, response) => {
       response.status(500).json({ error })
     })
 })
+
+module.exports = app;

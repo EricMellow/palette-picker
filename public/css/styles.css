@@ -26,6 +26,14 @@ select {
   height: 50px;
 }
 
+img {
+  height: 55px;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+}
 .color-swatch {
   height: 275px;
   flex-grow: 1;
