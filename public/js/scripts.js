@@ -1,5 +1,6 @@
 setRandomColors()
 addProjectsAsOptions()
+addPalettesToPage()
 
 var $generateBtn = $('.generator-btn')
 var $colorSwatch = $('.color-swatch')
@@ -81,6 +82,36 @@ async function createPalette(event) {
   
   addPalettesToPage()
   $('.palette-input').val('')
+}
+
+async function addPalettesToPage() {
+  const url = 'http://localhost:3000/api/v1/projects'
+  const response = await fetch(url)
+  const projects = await response.json()
+
+  projects.forEach(async project => {
+    const url = `/api/v1/projects/${project.id}/palettes`
+    const response = await fetch(url)
+    const palettes = await response.json()
+    const palettesDisplay = palettes.map(palette => {
+      return (`
+      <div class="palette-display">
+      <div class="color-circle" style="background-color:${palette.color1};"></div>
+      <div class="color-circle" style="background-color:${palette.color2};"></div>
+      <div class="color-circle" style="background-color:${palette.color3};"></div>
+      <div class="color-circle" style="background-color:${palette.color4};"></div>
+      <div class="color-circle" style="background-color:${palette.color5};"></div>
+      </div>
+      `)
+    })
+
+    $('.projects-container').append(`
+    <article class="project-display">
+    <h4>${project.name}</h4>
+    ${palettesDisplay}
+    </article>
+    `)
+  })
 }
 
 async function addProjectsAsOptions() {
