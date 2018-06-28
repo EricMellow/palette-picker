@@ -79,6 +79,7 @@ async function createPalette(event) {
     }
   })
   
+  addPalettesToPage()
   $('.palette-input').val('')
 }
 
