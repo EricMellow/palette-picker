@@ -107,11 +107,13 @@ async function addPaletteToPage(projectName) {
   const palettesDisplay = palettes.map(palette => {
     return (`
     <div class="circle-display">
+    <p>${palette.name}</p>
     <div class="color-circle" style="background-color:${palette.color1};"></div>
     <div class="color-circle" style="background-color:${palette.color2};"></div>
     <div class="color-circle" style="background-color:${palette.color3};"></div>
     <div class="color-circle" style="background-color:${palette.color4};"></div>
     <div class="color-circle" style="background-color:${palette.color5};"></div>
+    <button class="delete-btn"></button>
     </div>
     `)
   })
@@ -136,11 +138,13 @@ async function addAllPalettesToPage() {
     const palettesDisplay = palettes.map(palette => {
       return (`
       <div class="circle-display">
+      <p>${palette.name}</p>
       <div class="color-circle" style="background-color:${palette.color1};"></div>
       <div class="color-circle" style="background-color:${palette.color2};"></div>
       <div class="color-circle" style="background-color:${palette.color3};"></div>
       <div class="color-circle" style="background-color:${palette.color4};"></div>
       <div class="color-circle" style="background-color:${palette.color5};"></div>
+      <button class="delete-btn"></button>
       </div>
       `)
     })
