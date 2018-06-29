@@ -179,6 +179,45 @@ describe('API routes', () => {
     });
   });
 
+  describe('GET /api/v1/projects/:id/palettes', () => {
+    beforeEach(function (done) {
+      knex.migrate.rollback()
+        .then(function () {
+          knex.migrate.latest()
+            .then(function () {
+              return knex.seed.run()
+                .then(function () {
+                  done();
+                });
+            });
+        });
+    });
+
+    it('should return an array of palettes', done => {
+      chai.request(server)
+        .get('/api/v1/projects/1/palettes')
+        .end((error, response) => {
+          response.should.have.status(200)
+          response.body.should.be.a('array')
+          response.body.length.should.equal(2);
+          response.body[1].should.have.a.property('name')
+          response.body[1].name.should.equal('2nd Palette')
+          response.body[1].should.have.a.property('color1')
+          response.body[1].color1.should.equal('rgba(1, 2, 3)')
+          response.body[1].should.have.a.property('color2')
+          response.body[1].color2.should.equal('rgba(2, 3, 4)')
+          response.body[1].should.have.a.property('color3')
+          response.body[1].color3.should.equal('rgba(3, 4, 5)')
+          response.body[1].should.have.a.property('color4')
+          response.body[1].color4.should.equal('rgba(4, 5, 6)')
+          response.body[1].should.have.a.property('color5')
+          response.body[1].color5.should.equal('rgba(9, 8, 7)')
+          response.body[1].should.have.a.property('project_id')
+          response.body[1].project_id.should.equal(1)
+          done()
+        })
+    });
+  });
 
 
   })
