@@ -86,6 +86,21 @@ app.post('/api/v1/palettes', async (request, response) => {
     })
 })
 
+app.delete('/api/v1/palettes', async(request, response) => {
+  // const palette = await database('palettes').where({
+  //   name: request.body.name,
+  //   project_id: request.body.project_id
+  // })
+  // const paletteId = palette.id
+
+  database('palettes').where({
+    name: request.body.name,
+    project_id: request.body.project_id
+  })
+  .del()
+  .then()
+})
+
 app.get('/api/v1/palettes', (request, response) => {
   database('palettes').select()
     .then(palettes => {
@@ -111,5 +126,6 @@ app.get('/api/v1/projects/:id/palettes', (request, response) => {
       response.status(500).json({ error });
     });
 });
+
 
 module.exports = app;

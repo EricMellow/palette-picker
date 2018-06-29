@@ -11,6 +11,7 @@ $generateBtn.on('click', setRandomColors);
 $colorSwatch.on('click', toggleLock)
 $projectForm.on('submit', createProject)
 $paletteForm.on('submit', createPalette)
+$('.projects-display').on('click', '.delete-btn', deletePalette);
 
 
 function randomColorGenerator() {
@@ -38,6 +39,32 @@ function toggleLock() {
   } else {
     $(this).text("Lock")
   }
+}
+
+async function deletePalette() {
+  const paletteName = $(this).closest('.circle-display').find('p').text()
+  const projectName = $(this).closest('.card-display').find('h4').text()
+  const projectUrl = 'http://localhost:3000/api/v1/projects'
+
+  const response = await fetch(projectUrl)
+  const projects = await response.json()
+  console.log(projectName)
+  const matchingProject = projects.find(project => project.name === projectName)
+  const paletteUrl = 'http://localhost:3000/api/v1/palettes'
+  const data = {
+    name: paletteName,
+    project_id: matchingProject.id
+  }
+
+  fetch(paletteUrl, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+
+  addPaletteToPage(projectName)
 }
 
 async function createProject(event) {
@@ -104,37 +131,13 @@ async function addPaletteToPage(projectName) {
   const paletteUrl = `/api/v1/projects/${matchingProject.id}/palettes`
   const paletteResponse = await fetch(paletteUrl)
   const palettes = await paletteResponse.json()
-  const palettesDisplay = palettes.map(palette => {
-    return (`
-    <div class="circle-display">
-    <p>${palette.name}</p>
-    <div class="color-circle" style="background-color:${palette.color1};"></div>
-    <div class="color-circle" style="background-color:${palette.color2};"></div>
-    <div class="color-circle" style="background-color:${palette.color3};"></div>
-    <div class="color-circle" style="background-color:${palette.color4};"></div>
-    <div class="color-circle" style="background-color:${palette.color5};"></div>
-    <button class="delete-btn"></button>
-    </div>
-    `)
-  })
-  
-  $(`.${projectName}`).replaceWith(`
+
+  if (palettes.error) {
+    $(`.${projectName}`).replaceWith(`
   <div class="${projectName}">
-  ${palettesDisplay}
   </div>
   `)
-  $('.select-projects').val("")
-}
-
-async function addAllPalettesToPage() {
-  const url = 'http://localhost:3000/api/v1/projects'
-  const response = await fetch(url)
-  const projects = await response.json()
-
-  projects.forEach(async project => {
-    const url = `/api/v1/projects/${project.id}/palettes`
-    const response = await fetch(url)
-    const palettes = await response.json()
+  } else {
     const palettesDisplay = palettes.map(palette => {
       return (`
       <div class="circle-display">
@@ -148,15 +151,58 @@ async function addAllPalettesToPage() {
       </div>
       `)
     })
-
-    $('.projects-container').append(`
-    <article class="card-display">
-    <h4>${project.name}</h4>
-    <div class="${project.name}">
+    
+    $(`.${projectName}`).replaceWith(`
+    <div class="${projectName}">
     ${palettesDisplay}
     </div>
-    </article>
     `)
+    $('.select-projects').val("")
+  }
+}
+
+async function addAllPalettesToPage() {
+  const url = 'http://localhost:3000/api/v1/projects'
+  const response = await fetch(url)
+  const projects = await response.json()
+
+  projects.forEach(async project => {
+    const url = `/api/v1/projects/${project.id}/palettes`
+    const response = await fetch(url)
+    const palettes = await response.json()
+    
+    if (palettes.error) {
+      $('.projects-container').append(`
+      <article class="card-display">
+      <h4>${project.name}</h4>
+      <div class="${project.name}">
+      </div>
+      </article>
+      `)
+    } else {
+      const palettesDisplay = palettes.map(palette => {
+        return (`
+        <div class="circle-display">
+        <p>${palette.name}</p>
+        <div class="color-circle" style="background-color:${palette.color1};"></div>
+        <div class="color-circle" style="background-color:${palette.color2};"></div>
+        <div class="color-circle" style="background-color:${palette.color3};"></div>
+        <div class="color-circle" style="background-color:${palette.color4};"></div>
+        <div class="color-circle" style="background-color:${palette.color5};"></div>
+        <button class="delete-btn"></button>
+        </div>
+        `)
+      })
+  
+      $('.projects-container').append(`
+      <article class="card-display">
+      <h4>${project.name}</h4>
+      <div class="${project.name}">
+      ${palettesDisplay}
+      </div>
+      </article>
+      `)
+    }
   })
 }
 
