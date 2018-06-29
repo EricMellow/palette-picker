@@ -29,7 +29,7 @@ app.post('/api/v1/projects', async (request, response) => {
   })
 
   if (nameAlreadyExists) {
-    return response.status(304).send({
+    return response.status(304).json({
       error: 'Project name already exists.'
     })
   } else {
