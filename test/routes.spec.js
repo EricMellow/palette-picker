@@ -30,18 +30,35 @@ describe('CLIENT routes', () => {
 })
 
 describe('API routes', () => {
-  beforeEach(function (done) {
-    knex.migrate.rollback()
-      .then(function () {
-        knex.migrate.latest()
-          .then(function () {
-            return knex.seed.run()
-              .then(function () {
-                done();
-              });
-          });
-      });
+  describe('POST /api/v1/projects', () => {
+    beforeEach(function (done) {
+      knex.migrate.rollback()
+        .then(function () {
+          knex.migrate.latest()
+            .then(function () {
+              return knex.seed.run()
+                .then(function () {
+                  done();
+                });
+            });
+        });
+    });
+
+    it('should create a new project', () => {
+      chai.request(server)
+        .post('/api/v1/projects')
+        .send({
+          name: 'Test'
+        })
+        .end((error, response) => {
+          response.should.have.status(201);
+          response.body.should.be.a('object');
+          response.body.should.have.property('name')
+          response.body.lastname.should.equal('Test')
+          done();
+        })
+    });
   });
 
-  it('')
+  
   })
