@@ -31,7 +31,7 @@ describe('CLIENT routes', () => {
 
 describe('API routes', () => {
   describe('POST /api/v1/projects', () => {
-    beforeEach(function (done) {
+    before(function (done) {
       knex.migrate.rollback()
         .then(function () {
           knex.migrate.latest()
@@ -55,6 +55,21 @@ describe('API routes', () => {
           response.body.should.be.a('object');
           response.body.should.have.property('name')
           response.body.lastname.should.equal('Test')
+          done();
+        })
+    });
+
+    it('should not create a new project if a project already exists with that name', () => {
+      chai.request(server)
+        .post('/api/v1/projects')
+        .send({
+          name: 'Mayhem'
+        })
+        .end((error, response) => {
+          response.should.have.status(304);
+          response.body.should.be.a('object');
+          response.body.should.have.property('error')
+          response.body.lastname.should.equal('Project name already exists.')
           done();
         })
     });
