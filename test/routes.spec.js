@@ -89,17 +89,53 @@ describe('API routes', () => {
         });
     });
 
-    it('should return an array of projects', () => {
+    it('should return an array of projects', done => {
       chai.request(server)
       .get('/api/v1/projects')
       .end((error, response) => {
         response.should.have.status(200)
-        response.body.should.be.a(array)
+        response.body.should.be.a('array')
         response.body[0].should.have.a.property('name')
         response.body[0].name.should.equal('Mayhem')
         done()
       })
     });
   });
+
+  describe('POST /api/v1/palettes', () => {
+    beforeEach(function (done) {
+      knex.migrate.rollback()
+        .then(function () {
+          knex.migrate.latest()
+            .then(function () {
+              return knex.seed.run()
+                .then(function () {
+                  done();
+                });
+            });
+        });
+    });
+
+    it('should create a new palette', done => {
+      chai.request(server)
+        .post('/api/v1/palettes')
+        .send({
+          name: 'First Palette',
+          color1: 'rgba(1, 2, 3)',
+          color2: 'rgba(2, 3, 4)',
+          color3: 'rgba(3, 4, 5)',
+          color4: 'rgba(4, 5, 6)',
+          color5: 'rgba(9, 8, 7)',
+          projectName: 'Mayhem'
+        })
+        .end((error, response) => {
+          response.should.have.status(201);
+          response.body.should.be.a('object');
+          response.body.should.have.property('paletteId')
+          response.body.paletteId.should.equal(3)
+          done();
+        })
+    });
+    });
   
   })
