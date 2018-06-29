@@ -44,13 +44,13 @@ function toggleLock() {
 async function deletePalette() {
   const paletteName = $(this).closest('.circle-display').find('p').text()
   const projectName = $(this).closest('.card-display').find('h4').text()
-  const projectUrl = 'http://localhost:3000/api/v1/projects'
+  const projectUrl = '/api/v1/projects'
 
   const response = await fetch(projectUrl)
   const projects = await response.json()
   console.log(projectName)
   const matchingProject = projects.find(project => project.name === projectName)
-  const paletteUrl = 'http://localhost:3000/api/v1/palettes'
+  const paletteUrl = '/api/v1/palettes'
   const data = {
     name: paletteName,
     project_id: matchingProject.id
@@ -69,7 +69,7 @@ async function deletePalette() {
 
 async function createProject(event) {
   event.preventDefault()
-  const url = 'http://localhost:3000/api/v1/projects'
+  const url = '/api/v1/projects'
   const projectName = $('.project-input').val()
   const data = {name: projectName}
 
@@ -98,7 +98,7 @@ function addProjectDisplay(projectName) {
 
 async function createPalette(event) {
   event.preventDefault()
-  const url = 'http://localhost:3000/api/v1/palettes'
+  const url = '/api/v1/palettes'
   const paletteName = $('.palette-input').val()
   const projectName = $('.select-projects').val()
   const data = {
@@ -124,7 +124,7 @@ async function createPalette(event) {
 }
 
 async function addPaletteToPage(projectName) {
-  const url = 'http://localhost:3000/api/v1/projects'
+  const url = '/api/v1/projects'
   const response = await fetch(url)
   const projects = await response.json()
   const matchingProject = projects.find(project => project.name === projectName)
@@ -162,7 +162,7 @@ async function addPaletteToPage(projectName) {
 }
 
 async function addAllPalettesToPage() {
-  const url = 'http://localhost:3000/api/v1/projects'
+  const url = '/api/v1/projects'
   const response = await fetch(url)
   const projects = await response.json()
 
@@ -207,7 +207,7 @@ async function addAllPalettesToPage() {
 }
 
 async function addProjectsAsOptions() {
-  const url = 'http://localhost:3000/api/v1/projects'
+  const url = '/api/v1/projects'
   const response = await fetch(url)
   const projects = await response.json()
   const options = projects.map(project => {
