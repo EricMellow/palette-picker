@@ -63,7 +63,10 @@ app.post('/api/v1/palettes', async (request, response) => {
     color5,  
     projectName } = request.body;
   const projects = await database('projects').select()
-  const matchingProject = projects.find(project => project.name === projectName)
+  const matchingProject = projects.find(project => {
+    return project.name === projectName
+  })
+  
   const project_id = matchingProject.id;
 
   database('palettes').insert({
@@ -83,6 +86,21 @@ app.post('/api/v1/palettes', async (request, response) => {
     })
 })
 
+app.delete('/api/v1/palettes', async(request, response) => {
+  // const palette = await database('palettes').where({
+  //   name: request.body.name,
+  //   project_id: request.body.project_id
+  // })
+  // const paletteId = palette.id
+
+  database('palettes').where({
+    name: request.body.name,
+    project_id: request.body.project_id
+  })
+  .del()
+  .then()
+})
+
 app.get('/api/v1/palettes', (request, response) => {
   database('palettes').select()
     .then(palettes => {
@@ -92,5 +110,22 @@ app.get('/api/v1/palettes', (request, response) => {
       response.status(500).json({ error })
     })
 })
+
+app.get('/api/v1/projects/:id/palettes', (request, response) => {
+  database('palettes').where('project_id', request.params.id).select()
+    .then(palettes => {
+      if (palettes.length) {
+        response.status(200).json(palettes);
+      } else {
+        response.status(404).json({
+          error: `Could not find palettes with id ${request.params.id}`
+        });
+      }
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
+});
+
 
 module.exports = app;

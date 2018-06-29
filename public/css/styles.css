@@ -34,6 +34,35 @@ header {
   display: flex;
   justify-content: center;
 }
+
+.color-circle {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  margin: 5px;
+}
+
+.circle-display {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.projects-container {
+  display: flex;
+  text-align: center;
+  flex-wrap: wrap;
+}
+
+.card-display {
+  margin: 10px;
+  background-color: rgb(255, 255, 255, .5);
+  border-radius: 5px;
+  padding: 10px;
+  width: 300px;
+  height: 200px;
+}
+
 .color-swatch {
   height: 275px;
   flex-grow: 1;
@@ -119,4 +148,14 @@ header {
   border-radius: 5px;
   font-size: 1.5rem;
   width: 20%;
+}
+
+.delete-btn {
+  background-image: url(../assets/trash.png);
+  width: 40px;
+  height: 40px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: transparent;
+  border: none;
 }
