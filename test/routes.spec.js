@@ -31,7 +31,7 @@ describe('CLIENT routes', () => {
 
 describe('API routes', () => {
   describe('POST /api/v1/projects', () => {
-    before(function (done) {
+    beforeEach(function (done) {
       knex.migrate.rollback()
         .then(function () {
           knex.migrate.latest()
@@ -44,7 +44,7 @@ describe('API routes', () => {
         });
     });
 
-    it('should create a new project', () => {
+    it('should create a new project', done => {
       chai.request(server)
         .post('/api/v1/projects')
         .send({
@@ -53,13 +53,13 @@ describe('API routes', () => {
         .end((error, response) => {
           response.should.have.status(201);
           response.body.should.be.a('object');
-          response.body.should.have.property('name')
-          response.body.lastname.should.equal('Test')
+          response.body.should.have.property('projectId')
+          response.body.projectId.should.equal(2)
           done();
         })
     });
 
-    it('should not create a new project if a project already exists with that name', () => {
+    it('should not create a new project if a project already exists with that name', done => {
       chai.request(server)
         .post('/api/v1/projects')
         .send({
@@ -68,12 +68,38 @@ describe('API routes', () => {
         .end((error, response) => {
           response.should.have.status(304);
           response.body.should.be.a('object');
-          response.body.should.have.property('error')
-          response.body.lastname.should.equal('Project name already exists.')
+          // response.body.should.have.property('error')
+          // response.body.error.should.equal('Project name already exists.')
           done();
         })
     });
   });
 
+  describe('GET /api/v1/projects', () => {
+    beforeEach(function (done) {
+      knex.migrate.rollback()
+        .then(function () {
+          knex.migrate.latest()
+            .then(function () {
+              return knex.seed.run()
+                .then(function () {
+                  done();
+                });
+            });
+        });
+    });
+
+    it('should return an array of projects', () => {
+      chai.request(server)
+      .get('/api/v1/projects')
+      .end((error, response) => {
+        response.should.have.status(200)
+        response.body.should.be.a(array)
+        response.body[0].should.have.a.property('name')
+        response.body[0].name.should.equal('Mayhem')
+        done()
+      })
+    });
+  });
   
   })
