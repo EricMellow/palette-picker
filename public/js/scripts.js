@@ -13,6 +13,7 @@ $projectForm.on('submit', createProject)
 $paletteForm.on('submit', createPalette)
 $('.projects-display').on('click', '.delete-btn', deletePalette);
 
+// add a function to change main palette when small one is clicked
 
 function randomColorGenerator() {
   const value1 = Math.floor(Math.random() * 255)
