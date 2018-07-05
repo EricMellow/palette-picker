@@ -14,7 +14,6 @@ app.locals.projects = [{id: 3, name: 'Project Name'}]
 app.locals.palettes = [{id: 1, name: 'Palette Name', colors: {}, project_id: 1}]
 
 app.get('/', (request, response) => {
-  // response.send('Go ahead and pick those palettes!');
 });
 
 app.listen(app.get('port'), () => {
