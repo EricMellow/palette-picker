@@ -4,3 +4,5 @@ services:
   - postgresql
 before_script:
   - psql -c 'create database palette;' -U postgres
+notifications:
+  email: false
