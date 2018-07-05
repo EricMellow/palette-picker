@@ -1,8 +1,14 @@
 language: node_js
 node_js: '9'
 services:
-  - postgresql
+- postgresql
 before_script:
-  - psql -c 'create database palette;' -U postgres
+- psql -c 'create database palette;' -U postgres
 notifications:
   email: false
+deploy:
+  provider: heroku
+  api_key:
+    secure: EEabPGdFimZQZE0vrevWjqK/Ojdl2/Qs5wMpRZIKRvy8/y4axdMaAEuRxgjYegmKCo1Nb2HpZvikwQ+B20qgPA+UArpu8dYO0RKdxMVXYSq005XH8LnuARTSfa6zGdlkhKWuPhTCEXnojKinZShh6QuayjBCmN7WExvTCUXN90ayk+lOa1S4aM7qsW7aGu5iauvTbC/WEh2UAf8eLXZGst7SM7aTSB+D7lvyqMg2hL7tcCqZvA07o2+qi/CCmLspjD7ATg/gQuZjEPxIURsZtdW0rkYvm2GdPRLfL6mASSw/ZAThQoxT+BEatYgsAeCI2pg8EikGZOgbrUkZDQxRfzS8FgHVfJJZgEwQP8f/fpKFRLihwofKN+3+7P38lwYOOdRpXcXKlnYPPIu1MmBqRF2e0y4WQmDlDnmqF2KLm76GhPGq5EnLCokkWTp5CNYa4kqnREKRkuYJC8UKYYfK09ZaS6IA0vOot8bsLuop7RVNAAWGXonCME/iO/cqUlaMCXwm7xHcwnNa7VVAwuyiojPrY1BJiUBvGQa84bZM1WNwpjNT1upjx+Nl4xl4tOmdL7mc0WNWFHIE6JARUu+971lDsuiEMftRA5RA55Gt5vhLQX+ejpfHnIog0CJPEEfgsIN6a1g21xHCKGYSXF2JCyPS4Q4hi7f7u4/lpDIMaVQ=
+  app: mellow-palette-picker
+  skip_cleanup: true
