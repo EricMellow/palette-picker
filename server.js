@@ -13,7 +13,7 @@ app.locals.title = 'Palette Picker';
 app.locals.projects = [{id: 3, name: 'Project Name'}]
 app.locals.palettes = [{id: 1, name: 'Palette Name', colors: {}, project_id: 1}]
 
-// is this still necessary
+
 app.get('/', (request, response) => {
 });
 
